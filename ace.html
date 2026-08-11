@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mafia Wars — Ace Wins</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-ace">
+
+  <nav class="navbar">
+    <div class="brand">♠️ Mafia Wars</div>
+    <ul class="nav-links">
+      <li><a class="nav-link" href="index.html">Home</a></li>
+      <li><a class="nav-link" href="mafia.html">Mafia Wins</a></li>
+      <li><a class="nav-link" href="jester.html">Jester Wins</a></li>
+      <li><a class="nav-link" href="ace.html">Ace Wins</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h1 class="page-title">Ace Wins</h1>
+    <p class="page-subtitle">Ranked highest to lowest (old wins not counted)</p>
+    <div id="ace-table"></div>
+  </main>
+
+  <footer>Mafia Wars Scoreboard</footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>renderTable("ace-table", "ace");</script>
+</body>
+</html>
