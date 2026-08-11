@@ -18,4 +18,3 @@ const players = [
   { name: "Ahmed Bhai",           mafia: 1, jester: 0, ace: 0 },
   { name: "Abu Bakr",             mafia: 0, jester: 0, ace: 0 },
 ];
-
