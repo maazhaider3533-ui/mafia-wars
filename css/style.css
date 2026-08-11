@@ -1,1 +1,389 @@
+/* =========================================
+   BASE / RESET
+   ========================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
+html {
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* min-height (not height) lets the box grow with content, so the
+     background always fills the whole page instead of cutting off
+     at one screen height. */
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+  background: var(--bg-gradient);
+  background-size: 300% 300%;
+  animation: gradientDrift 18s ease infinite;
+}
+
+/* Slow, subtle background motion — the gradient itself gently drifts */
+@keyframes gradientDrift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  body {
+    animation: none;
+  }
+}
+
+/* =========================================
+   THEME VARIABLES
+   Each page's <body> gets a theme-* class in HTML.
+   Change colors here to re-theme the whole site.
+   ========================================= */
+
+/* Home — neutral dark, ties the whole game together */
+body.theme-home {
+  --bg-gradient: linear-gradient(160deg, #12121a 0%, #1c1c28 100%);
+  --text-color: #f1eee7;
+  --accent: #d4af37;
+  --accent-soft: rgba(212, 175, 55, 0.15);
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(212, 175, 55, 0.35);
+}
+
+/* Mafia — blackish / reddish, moody underworld feel */
+body.theme-mafia {
+  --bg-gradient: linear-gradient(160deg, #0d0d0d 0%, #2a0a0a 60%, #3a0d0d 100%);
+  --text-color: #f2e8e4;
+  --accent: #c9302c;
+  --accent-soft: rgba(201, 48, 44, 0.18);
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(201, 48, 44, 0.45);
+}
+
+/* Jester — bright, unpredictable yellow */
+body.theme-jester {
+  --bg-gradient: linear-gradient(160deg, #2a2405 0%, #4d3f07 60%, #6b5a0a 100%);
+  --text-color: #fffbe8;
+  --accent: #f4c430;
+  --accent-soft: rgba(244, 196, 48, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(244, 196, 48, 0.5);
+}
+
+/* Ace — mysterious purple */
+body.theme-ace {
+  --bg-gradient: linear-gradient(160deg, #120a1f 0%, #241436 60%, #341a4d 100%);
+  --text-color: #f1eafc;
+  --accent: #a259ff;
+  --accent-soft: rgba(162, 89, 255, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(162, 89, 255, 0.45);
+}
+
+/* =========================================
+   NAVIGATION
+   ========================================= */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid var(--card-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+}
+
+.navbar .brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+  display: inline-block;
+  animation: fadeInDown 0.6s ease both;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.nav-links li {
+  animation: fadeInDown 0.6s ease both;
+}
+
+.nav-links li:nth-child(1) { animation-delay: 0.05s; }
+.nav-links li:nth-child(2) { animation-delay: 0.12s; }
+.nav-links li:nth-child(3) { animation-delay: 0.19s; }
+.nav-links li:nth-child(4) { animation-delay: 0.26s; }
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.95rem;
+  display: inline-block;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-link:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--accent-soft);
+}
+
+.nav-link:active {
+  transform: translateY(0);
+}
+
+.nav-link.active {
+  background: var(--accent);
+  color: #14141a;
+  font-weight: 600;
+  animation: fadeInDown 0.6s ease both, pulseGlow 2.4s ease-in-out 0.6s infinite;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--accent-soft); }
+  50%      { box-shadow: 0 0 0 6px transparent; }
+}
+
+/* =========================================
+   LAYOUT
+   ========================================= */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+  color: var(--accent);
+  animation: fadeInUp 0.7s ease both;
+}
+
+.page-subtitle {
+  opacity: 0.75;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  animation: fadeInUp 0.7s ease 0.1s both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+/* =========================================
+   HOME PAGE SUMMARY CARDS
+   ========================================= */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.summary-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  animation: fadeInUp 0.7s ease both;
+}
+
+.summary-card:nth-child(1) { animation-delay: 0.15s; }
+.summary-card:nth-child(2) { animation-delay: 0.25s; }
+.summary-card:nth-child(3) { animation-delay: 0.35s; }
+
+.summary-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: var(--accent);
+  box-shadow: 0 12px 28px var(--accent-soft);
+}
+
+.summary-card .icon {
+  transition: transform 0.3s ease;
+}
+
+.summary-card:hover .icon {
+  transform: scale(1.2) rotate(-4deg);
+}
+
+.summary-card .icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.summary-card .label {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.summary-card .leader-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+  word-break: break-word;
+}
+
+.summary-card .leader-score {
+  margin-top: 0.35rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.summary-card.mafia-card { border-top: 4px solid #c9302c; }
+.summary-card.jester-card { border-top: 4px solid #f4c430; }
+.summary-card.ace-card { border-top: 4px solid #a259ff; }
+
+/* =========================================
+   SCORE TABLES
+   ========================================= */
+.scores-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  overflow: hidden;
+  animation: fadeInUp 0.7s ease 0.2s both;
+}
+
+.scores-table thead {
+  background: var(--accent-soft);
+}
+
+.scores-table th,
+.scores-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.scores-table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent);
+}
+
+.scores-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.scores-table tbody tr {
+  transition: background 0.2s ease, transform 0.2s ease;
+  animation: rowFadeIn 0.5s ease both;
+}
+
+/* Stagger the first 15 rows; any beyond that just use the last delay */
+.scores-table tbody tr:nth-child(1)  { animation-delay: 0.04s; }
+.scores-table tbody tr:nth-child(2)  { animation-delay: 0.08s; }
+.scores-table tbody tr:nth-child(3)  { animation-delay: 0.12s; }
+.scores-table tbody tr:nth-child(4)  { animation-delay: 0.16s; }
+.scores-table tbody tr:nth-child(5)  { animation-delay: 0.20s; }
+.scores-table tbody tr:nth-child(6)  { animation-delay: 0.24s; }
+.scores-table tbody tr:nth-child(7)  { animation-delay: 0.28s; }
+.scores-table tbody tr:nth-child(8)  { animation-delay: 0.32s; }
+.scores-table tbody tr:nth-child(9)  { animation-delay: 0.36s; }
+.scores-table tbody tr:nth-child(10) { animation-delay: 0.40s; }
+.scores-table tbody tr:nth-child(n+11) { animation-delay: 0.44s; }
+
+@keyframes rowFadeIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.scores-table tbody tr:hover {
+  background: var(--accent-soft);
+  transform: translateX(4px);
+}
+
+.scores-table .rank {
+  width: 40px;
+  opacity: 0.7;
+}
+
+.scores-table .score {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.top-row {
+  background: var(--accent-soft);
+}
+
+.top-row .player-name::after {
+  content: " 👑";
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 640px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .page-title {
+    font-size: 1.6rem;
+  }
+}
